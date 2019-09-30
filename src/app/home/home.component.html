@@ -1,0 +1,97 @@
+<section class="container">
+
+  <div class="example-header">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+
+  <div class="example-container mat-elevation-z8">
+    <mat-table [dataSource]="dataSource">
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="station_name">
+        <mat-header-cell *matHeaderCellDef> Station Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.station_name}} </mat-cell>
+      </ng-container>
+
+      <!-- City Column -->
+      <ng-container matColumnDef="city">
+        <mat-header-cell *matHeaderCellDef> City </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.city}} </mat-cell>
+      </ng-container>
+
+      <!-- Fuel Type Column -->
+      <ng-container matColumnDef="fuel_type_code">
+        <mat-header-cell *matHeaderCellDef> Fuel Type </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.fuel_type_code}} </mat-cell>
+      </ng-container>
+
+      <!-- Owner Type Column -->
+      <ng-container matColumnDef="owner_type_code">
+        <mat-header-cell *matHeaderCellDef> Owner Type </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.owner_type_code}} </mat-cell>
+      </ng-container>
+
+      <!-- LPG Available Column -->
+      <ng-container matColumnDef="lpg_primary">
+        <mat-header-cell *matHeaderCellDef> LPG Primary </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.lpg_primary}} </mat-cell>
+      </ng-container>
+
+      <!-- Card Accepted Column -->
+      <ng-container matColumnDef="cards_accepted">
+        <mat-header-cell *matHeaderCellDef> Cards Accept </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.cards_accepted}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+    <mat-paginator [length]="pageLength"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   (page)="setMarker($event)">
+    </mat-paginator>
+
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div *ngIf="markers.length" class="col space-between">
+    <agm-map
+      [latitude]="42.660919"
+      [longitude]="-88.522923"
+      [zoom]="5">
+      <agm-marker
+        *ngFor="let marker of markers"
+        [latitude]="marker.lat"
+        [longitude]="marker.lng"
+        [opacity]="marker.alpha"
+        [markerDraggable]="false"
+        (mouseOver)="onMouseOver(infoWindow)"
+        (mouseOut)="onMouseOut(infoWindow)">
+
+        <agm-info-window [disableAutoPan]="false" #infoWindow class="info-window">
+          <div>
+            <label class="info-label">Fuel Type: </label>
+            <span>{{marker.fuelType}}</span>
+          </div>
+          <div>
+            <label class="info-label">Geo Code: </label>
+            <span>{{marker.geoCode}}</span>
+          </div>
+          <div>
+            <label class="info-label">Owner: </label>
+            <span>{{marker.owner}}</span>
+          </div>
+          <div>
+            <label class="info-label">Card Accept: </label>
+            <span>{{marker.card}}</span>
+          </div>
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </div>
+</section>

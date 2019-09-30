@@ -1,0 +1,17 @@
+
+<section class="container">
+
+  <!--child route-->
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!--chart-->
+
+  <div class="canvas-container" *ngIf="barChartLabels.length">
+    <div>City Chart</div>
+    <canvas ngChartjs [datasets]="barChartData" [labels]="barChartLabels"
+            [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+    </canvas>
+  </div>
+</section>
